@@ -1,6 +1,7 @@
 import random
 from src.card import Card, Color
 
+
 class Deck:
     # (0) represents 3 investment cards
     VALUES = [0] * 3 + list(range(2, 11))
@@ -8,22 +9,21 @@ class Deck:
     def __init__(self):
         self._cards = self._create_cards()
         self._pointer = 0
-        self.deck = self.shuffle()
+        self.deck: list[Card] = self._get_shuffled_cards()
 
-    def _create_cards(self) -> set[Card]:
-        return {
-            Card(color=color, value=value)
-            for color in Color
-            for value in self.VALUES
-        }
+    def _create_cards(self) -> tuple[Card]:
+        return tuple(Card(color=color, value=value) for color in Color for value in self.VALUES)
 
-    def shuffle(self) -> list[Card]:
-        self._pointer = 0
+    def _get_shuffled_cards(self) -> list[Card]:
         return random.sample(self._cards, len(self._cards))
+
+    def shuffle(self):
+        self._pointer = 0
+        self.deck = self._get_shuffled_cards()
 
     def give_next_card(self):
         self._check_pointer()
-        card = self._cards[self._pointer]
+        card = self.deck[self._pointer]
         self._pointer += 1
         return card
 
@@ -31,7 +31,7 @@ class Deck:
         if self._pointer + n - 1 >= len(self._cards):
             self._check_pointer()
             raise ValueError(f"Too many cards requested - {n}")
-        cards = self._cards[self._pointer:self._pointer + n]
+        cards = self.deck[self._pointer : self._pointer + n]
         self._pointer += n
         return cards
 

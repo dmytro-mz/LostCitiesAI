@@ -1,26 +1,29 @@
+from __future__ import annotations
 from abc import abstractmethod
 from typing import Union
 
 from src.action import Action
 from src.card import Card
-from src.game import Game
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from src.game import Game
 
 
 class Player:
     N_CARDS_IN_HAND = 8
 
     def __init__(self):
-        self.hand = set()
+        self.hand = list()
 
     def empty_hand(self):
-        self.hand = set()
+        self.hand = list()
 
     def push_hand(self, card: Union[Card, list[Card]]):
         if isinstance(card, Card):
-            self.hand.add(card)
+            self.hand.append(card)
         elif isinstance(card, list):
-            for card in card:
-                self.hand.add(card)
+            self.hand.extend(card)
         else:
             raise TypeError
 
