@@ -1,17 +1,7 @@
 from dataclasses import dataclass
-from enum import Enum
+from src.enums import CardAction, PullingSource
 
 from src.card import Card, Color
-
-
-class CardAction(Enum):
-    PUSH_OWN_PILE = 1
-    PUSH_DISCARD_PILE = 2
-
-
-class PullingSource(Enum):
-    DRAW_PILE = 1
-    DISCARD_PILE = 2
 
 
 @dataclass
