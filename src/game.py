@@ -1,3 +1,4 @@
+from src.action import Action, CardAction, PullingSource
 from src.deck import Deck
 from src.player import Player
 from card import ColorsPiles
@@ -33,10 +34,35 @@ class Game:
             self.do_action(action, player)
             i += 1
         for player in [self.player_1, self.player_2]:
-            player.end_game()
+            player.end_game(self)
 
-    def validate_action(self, action, player):
-        pass  # TODO
+    def validate_action(self, action: Action, player: Player):
+        assert action.card in player.hand
+        if action.card_action == CardAction.PUSH_OWN_PILE:
+            player_pile = self.player_1_piles if player is self.player_1 else self.player_2_piles
+            assert player_pile.is_color_empty(action.card.color) or (
+                player_pile.get_last_card(action.card.color).value <= action.card.value
+            )
+        if action.pulling_source == PullingSource.DISCARD_PILE:
+            assert action.pulling_color is not None
+            assert not self.discard_piles.is_color_empty(action.pulling_color)
 
-    def do_action(self, action, player):
-        pass  # TODO
+    def do_action(self, action: Action, player: Player):
+        player.pop_hand(action.card)
+
+        if action.card_action == CardAction.PUSH_OWN_PILE:
+            pile = self.player_1_piles if player is self.player_1 else self.player_2_piles
+        elif action.card_action == CardAction.PUSH_DISCARD_PILE:
+            pile = self.discard_piles
+        else:
+            raise NotImplementedError
+        pile.push(action.card)
+
+        if action.pulling_source == PullingSource.DISCARD_PILE:
+            player.push_hand(self.discard_piles.pop(action.pulling_color))
+        elif action.pulling_source == PullingSource.DRAW_PILE:
+            player.push_hand(self.deck.give_next_card())
+        else:
+            raise NotImplementedError
+
+        player.validate_hand_size()
