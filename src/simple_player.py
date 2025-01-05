@@ -4,6 +4,9 @@ from src.player import Player
 
 
 class SimplePlayer(Player):
+    """
+    Iterate through cards ordered by value and perform first available action.
+    """
     def choose_action(self, game_state: Game) -> Action:
         for card in sorted(self.hand, key=lambda _card: _card.value):
             my_pile = game_state.player_1_piles if self is game_state.player_1 else game_state.player_2_piles
