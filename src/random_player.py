@@ -26,7 +26,14 @@ class RandomPlayer(Player):
             card = own_possible_cards[card_action - self.N_CARDS_IN_HAND]
             action = CardAction.PUSH_OWN_PILE
 
-        possible_colors_to_draw = [color for color in Color if not game_state.discard_piles.is_color_empty(color)]
+        possible_colors_to_draw = [
+            color
+            for color in Color
+            if (
+                not game_state.discard_piles.is_color_empty(color)
+                and (action is CardAction.PUSH_OWN_PILE or color is not card.color)
+            )
+        ]
         draw_action = random.randint(0, len(possible_colors_to_draw))
         if draw_action == len(possible_colors_to_draw):
             draw_source = PullingSource.DRAW_PILE
