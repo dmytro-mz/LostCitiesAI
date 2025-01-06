@@ -46,6 +46,8 @@ class Game:
         if action.pulling_source == PullingSource.DISCARD_PILE:
             assert action.pulling_color is not None
             assert not self.discard_piles.is_color_empty(action.pulling_color)
+            if action.card_action == CardAction.PUSH_DISCARD_PILE:
+                assert action.pulling_color != action.card.color
 
     def do_action(self, action: Action, player: Player):
         player.pop_hand(action.card)
