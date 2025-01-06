@@ -44,6 +44,12 @@ class Player:
         """
         pass
 
+    def end_turn(self, game_state: Game):
+        """
+        This function called in the end of the turn and can be used for RL agent
+        """
+        pass
+
 
 class HandOverflow(Exception):
     pass

@@ -32,6 +32,7 @@ class Game:
             action = player.choose_action(self)
             self.validate_action(action, player)
             self.do_action(action, player)
+            player.end_turn(self)
             i += 1
         for player in [self.player_1, self.player_2]:
             player.end_game(self)
