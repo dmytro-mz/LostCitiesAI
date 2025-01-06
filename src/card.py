@@ -1,4 +1,4 @@
-from src.enums import Color
+from enums import Color
 from dataclasses import dataclass
 
 

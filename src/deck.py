@@ -1,5 +1,5 @@
 import random
-from src.card import Card, Color
+from card import Card, Color
 
 
 class Deck:

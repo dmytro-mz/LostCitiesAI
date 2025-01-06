@@ -1,6 +1,6 @@
-from src.action import Action, CardAction, PullingSource
-from src.game import Game
-from src.player import Player
+from action import Action, CardAction, PullingSource
+from game import Game
+from player import Player
 
 
 class SimplePlayer(Player):

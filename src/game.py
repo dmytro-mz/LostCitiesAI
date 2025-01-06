@@ -1,6 +1,6 @@
-from src.action import Action, CardAction, PullingSource
-from src.deck import Deck
-from src.player import Player
+from action import Action, CardAction, PullingSource
+from deck import Deck
+from player import Player
 from card import ColorsPiles
 
 

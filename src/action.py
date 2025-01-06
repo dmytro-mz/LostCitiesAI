@@ -1,7 +1,7 @@
 from dataclasses import dataclass
-from src.enums import CardAction, PullingSource
+from enums import CardAction, PullingSource
 
-from src.card import Card, Color
+from card import Card, Color
 
 
 @dataclass

@@ -2,12 +2,12 @@ from __future__ import annotations
 from abc import abstractmethod
 from typing import Union
 
-from src.action import Action
-from src.card import Card
+from action import Action
+from card import Card
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from src.game import Game
+    from game import Game
 
 
 class Player:
