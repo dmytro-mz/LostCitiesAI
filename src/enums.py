@@ -2,11 +2,11 @@ from enum import Enum
 
 
 class Color(Enum):
-    RED = "Red"
-    BLUE = "Blue"
-    YELLOW = "Yellow"
-    GREEN = "Green"
-    WHITE = "White"
+    RED = 0
+    BLUE = 1
+    YELLOW = 2
+    GREEN = 3
+    WHITE = 4
 
 
 class CardAction(Enum):
