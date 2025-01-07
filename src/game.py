@@ -1,7 +1,15 @@
+from dataclasses import dataclass
 from action import Action, CardAction, PullingSource
 from deck import Deck
 from player import Player
 from card import ColorsPiles
+
+
+@dataclass
+class GameState:
+    players_piles: ColorsPiles
+    opponents_piles: ColorsPiles
+    discard_piles: ColorsPiles
 
 
 class Game:
@@ -29,13 +37,21 @@ class Game:
         i = 0
         while self.deck.get_deck_size():
             player = self.player_1 if i % 2 == 0 else self.player_2
-            action = player.choose_action(self)
+            action = player.choose_action(self.get_current_state(player))
             self.validate_action(action, player)
             self.do_action(action, player)
-            player.end_turn(self)
+            player.end_turn(self.get_current_state(player))
             i += 1
         for player in [self.player_1, self.player_2]:
-            player.end_game(self)
+            player.end_game(self.get_current_state(player))
+
+    def get_current_state(self, player):
+        player_is_1 = player is self.player_1
+        return GameState(
+            self.player_1_piles if player_is_1 else self.player_2_piles,
+            self.player_2_piles if player_is_1 else self.player_1_piles,
+            self.discard_piles,
+        )
 
     def validate_action(self, action: Action, player: Player):
         assert action.card in player.hand

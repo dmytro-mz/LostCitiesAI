@@ -7,7 +7,7 @@ from card import Card
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from game import Game
+    from game import GameState
 
 
 class Player:
@@ -35,16 +35,16 @@ class Player:
             raise HandOverflow(f"Expected size: {self.N_CARDS_IN_HAND}, current hand size: {len(self.hand)}")
 
     @abstractmethod
-    def choose_action(self, game_state: Game) -> Action:
+    def choose_action(self, game_state: GameState) -> Action:
         pass
 
-    def end_game(self, game_state: Game):
+    def end_game(self, game_state: GameState):
         """
         This function called in the end of the game and can be used for RL agent
         """
         pass
 
-    def end_turn(self, game_state: Game):
+    def end_turn(self, game_state: GameState):
         """
         This function called in the end of the turn and can be used for RL agent
         """
