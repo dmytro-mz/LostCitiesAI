@@ -1,18 +1,16 @@
 import random
-from card import Card, Color
+from card import Card, CARD_VALUES
+from enums import Color
 
 
 class Deck:
-    # (0) represents 3 investment cards
-    VALUES = [0] * 3 + list(range(2, 11))
-
     def __init__(self):
         self._cards = self._create_cards()
         self._pointer = 0
         self.deck: list[Card] = self._get_shuffled_cards()
 
-    def _create_cards(self) -> tuple[Card]:
-        return tuple(Card(color=color, value=value) for color in Color for value in self.VALUES)
+    def _create_cards(self) -> tuple[Card, ...]:
+        return tuple(Card(color=color, value=value) for color in Color for value in CARD_VALUES)
 
     def _get_shuffled_cards(self) -> list[Card]:
         return random.sample(self._cards, len(self._cards))

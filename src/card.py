@@ -1,6 +1,9 @@
 from enums import Color
 from dataclasses import dataclass
 
+# (0) represents 3 investment cards
+CARD_VALUES = [0] * 3 + list(range(2, 11))
+
 
 @dataclass
 class Card:
