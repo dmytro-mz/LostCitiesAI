@@ -14,8 +14,8 @@ class RandomPlayer(BasePlayer):
     def choose_action(self, game_state: GameState) -> Action:
         own_possible_cards = []
         for card in self.hand:
-            if game_state.players_piles.is_color_empty(card.color) or (
-                game_state.players_piles.get_last_card(card.color).value <= card.value
+            if game_state.player_piles.is_color_empty(card.color) or (
+                game_state.player_piles.get_last_card(card.color).value <= card.value
             ):
                 own_possible_cards.append(card)
         card_action = np.random.randint(0, self.N_CARDS_IN_HAND + len(own_possible_cards))

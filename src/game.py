@@ -7,8 +7,8 @@ from src.card import ColorsPiles
 
 @dataclass
 class GameState:
-    players_piles: ColorsPiles
-    opponents_piles: ColorsPiles
+    player_piles: ColorsPiles
+    opponent_piles: ColorsPiles
     discard_piles: ColorsPiles
     draw_stack_size: int
 
@@ -49,7 +49,7 @@ class Game:
     def _get_current_state(self, player) -> GameState:
         player_is_1 = player is self.player_1
         return GameState(
-            players_piles=self.player_1_piles if player_is_1 else self.player_2_piles,
+            player_piles=self.player_1_piles if player_is_1 else self.player_2_piles,
             opponents_piles=self.player_2_piles if player_is_1 else self.player_1_piles,
             discard_piles=self.discard_piles,
             draw_stack_size=self.deck.get_deck_size(),

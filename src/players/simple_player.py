@@ -15,8 +15,8 @@ class SimplePlayer(BasePlayer):
         for card in sorted(self.hand, key=lambda _card: _card.value):
             if first_card is None:
                 first_card = card
-            if game_state.players_piles.is_color_empty(card.color) or (
-                game_state.players_piles.get_last_card(card.color).value <= card.value
+            if game_state.player_piles.is_color_empty(card.color) or (
+                game_state.player_piles.get_last_card(card.color).value <= card.value
             ):
                 return Action(card, CardAction.PUSH_OWN_PILE, PullingSource.DRAW_PILE)
         return Action(first_card, CardAction.PUSH_DISCARD_PILE, PullingSource.DRAW_PILE)

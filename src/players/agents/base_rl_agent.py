@@ -92,7 +92,7 @@ class BaseRLAgent(BasePlayer, ABC):
         """
         norm_hand_val_diff_to_own_pile: list[float] = [
             (
-                (card.value - self._get_card_value_or_zero(game_state.players_piles.get_last_card(card.color)))
+                (card.value - self._get_card_value_or_zero(game_state.player_piles.get_last_card(card.color)))
                 / max(CARD_VALUES)
             )
             for card in self._sorted_hand
@@ -101,11 +101,11 @@ class BaseRLAgent(BasePlayer, ABC):
             card.value >= self._get_card_value_or_zero(game_state.opponents_piles.get_last_card(card.color))
             for card in self._sorted_hand
         ]
-        top_cards_in_own_pile: list[Optional[Card]] = [game_state.players_piles.get_last_card(color) for color in Color]
+        top_cards_in_own_pile: list[Optional[Card]] = [game_state.player_piles.get_last_card(color) for color in Color]
         norm_own_pile_scores: list[float] = [
-            game_state.players_piles.get_pile_value(color) / MAX_PILE_VALUE for color in Color
+            game_state.player_piles.get_pile_value(color) / MAX_PILE_VALUE for color in Color
         ]
-        norm_total_own_score: float = game_state.players_piles.get_piles_value() / (MAX_PILE_VALUE * COLOR_COUNT)
+        norm_total_own_score: float = game_state.player_piles.get_piles_value() / (MAX_PILE_VALUE * COLOR_COUNT)
         top_cards_in_opp_pile: list[Optional[Card]] = [
             game_state.opponents_piles.get_last_card(color) for color in Color
         ]
@@ -120,7 +120,7 @@ class BaseRLAgent(BasePlayer, ABC):
             (
                 (
                     self._get_card_value_or_zero(game_state.discard_piles.get_last_card(color))
-                    - self._get_card_value_or_zero(game_state.players_piles.get_last_card(color))
+                    - self._get_card_value_or_zero(game_state.player_piles.get_last_card(color))
                 )
                 / max(CARD_VALUES)
             )
@@ -163,7 +163,7 @@ class BaseRLAgent(BasePlayer, ABC):
             ] = 0
 
             # check if card can be pushed to own pile
-            if card.value < self._get_card_value_or_zero(game_state.players_piles.get_last_card(card.color)):
+            if card.value < self._get_card_value_or_zero(game_state.player_piles.get_last_card(card.color)):
                 action_mask[
                     self._get_action_index(
                         card=card,

@@ -89,7 +89,7 @@ class RLAgent1(BaseRLAgent):
         self._game_train_records[-1][2] = self._create_model_input(game_state_after_action)
 
     def end_game(self, game_state: GameState):
-        final_game_value = game_state.players_piles.get_piles_value()
+        final_game_value = game_state.player_piles.get_piles_value()
         for r in self._game_train_records:
             r[-1] = final_game_value
         self.train_buffer.extend(self._game_train_records)
