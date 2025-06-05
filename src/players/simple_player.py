@@ -1,7 +1,11 @@
-from src.action import Action, CardAction, PullingSource
-from src.game import Game, GameState
+from typing import TYPE_CHECKING
+
+from src.action import Action
+from src.enums import CardAction, PullingSource
 from src.players.base_player import BasePlayer
 
+if TYPE_CHECKING:
+    from src.game import GameState
 
 class SimplePlayer(BasePlayer):
     """
@@ -10,7 +14,7 @@ class SimplePlayer(BasePlayer):
     Always draw card from common draw pile
     """
 
-    def choose_action(self, game_state: GameState) -> Action:
+    def choose_action(self, game_state: "GameState") -> Action:
         first_card = None
         for card in sorted(self.hand, key=lambda _card: _card.value):
             if first_card is None:
@@ -23,10 +27,14 @@ class SimplePlayer(BasePlayer):
 
 
 if __name__ == "__main__":
+    from src.game import Game
+
     player_1 = SimplePlayer()
     player_2 = SimplePlayer()
     game = Game(player_1, player_2)
     game.play()
+    print(game.player_1_piles.get_piles_value())
+    print(game.player_2_piles.get_piles_value())
     # n = 5_000
     # scores_sum = 0.0
     # for i in range(n):

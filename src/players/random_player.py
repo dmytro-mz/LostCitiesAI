@@ -12,18 +12,18 @@ class RandomPlayer(BasePlayer):
     """
 
     def choose_action(self, game_state: GameState) -> Action:
-        own_possible_cards = []
+        valid_own_pile_plays = []
         for card in self.hand:
             if game_state.player_piles.is_color_empty(card.color) or (
                 game_state.player_piles.get_last_card(card.color).value <= card.value
             ):
-                own_possible_cards.append(card)
-        card_action = np.random.randint(0, self.N_CARDS_IN_HAND + len(own_possible_cards))
+                valid_own_pile_plays.append(card)
+        card_action = np.random.randint(0, self.N_CARDS_IN_HAND + len(valid_own_pile_plays))
         if card_action < self.N_CARDS_IN_HAND:
             card = self.hand[card_action]
             action = CardAction.PUSH_DISCARD_PILE
         else:
-            card = own_possible_cards[card_action - self.N_CARDS_IN_HAND]
+            card = valid_own_pile_plays[card_action - self.N_CARDS_IN_HAND]
             action = CardAction.PUSH_OWN_PILE
 
         possible_colors_to_draw = [
@@ -50,6 +50,8 @@ if __name__ == "__main__":
     player_2 = RandomPlayer()
     game = Game(player_1, player_2)
     game.play()
+    print(game.player_1_piles.get_piles_value())
+    print(game.player_2_piles.get_piles_value())
     # n = 5_000
     # scores_sum = 0.0
     # for i in range(n):

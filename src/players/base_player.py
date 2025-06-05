@@ -11,6 +11,10 @@ if TYPE_CHECKING:
 
 
 class BasePlayer(ABC):
+    """
+    Base class for all players.
+    """
+
     N_CARDS_IN_HAND = 8
 
     def __init__(self):
@@ -32,7 +36,7 @@ class BasePlayer(ABC):
 
     def validate_hand_size(self):
         if len(self.hand) != self.N_CARDS_IN_HAND:
-            raise HandOverflow(f"Expected size: {self.N_CARDS_IN_HAND}, current hand size: {len(self.hand)}")
+            raise HandSizeError(f"Expected size: {self.N_CARDS_IN_HAND}, current hand size: {len(self.hand)}")
 
     @abstractmethod
     def choose_action(self, game_state: GameState) -> Action:
@@ -49,5 +53,5 @@ class BasePlayer(ABC):
         """
 
 
-class HandOverflow(Exception):
+class HandSizeError(Exception):
     pass

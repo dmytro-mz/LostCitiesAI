@@ -4,6 +4,10 @@ from src.enums import Color
 
 
 class Deck:
+    """
+    Deck of cards.
+    """
+
     def __init__(self):
         self._cards = self._create_cards()
         self._pointer = 0
@@ -26,8 +30,8 @@ class Deck:
         return card
 
     def give_n_next_cards(self, n: int):
+        self._check_pointer()
         if self._pointer + n - 1 >= len(self._cards):
-            self._check_pointer()
             raise ValueError(f"Too many cards requested - {n}")
         cards = self.deck[self._pointer : self._pointer + n]
         self._pointer += n
@@ -35,11 +39,11 @@ class Deck:
 
     def _check_pointer(self):
         if self._pointer >= len(self._cards):
-            raise DeckEmpty
+            raise EmptyDeck
 
     def get_deck_size(self) -> int:
         return len(self._cards) - self._pointer
 
 
-class DeckEmpty(Exception):
+class EmptyDeck(Exception):
     pass
