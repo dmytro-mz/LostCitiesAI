@@ -1,12 +1,12 @@
-import random
+import numpy as np
 
-from action import Action
-from game import Game, GameState
-from player import Player
-from enums import CardAction, PullingSource, Color
+from src.action import Action
+from src.game import Game, GameState
+from src.players.base_player import BasePlayer
+from src.enums import CardAction, PullingSource, Color
 
 
-class RandomPlayer(Player):
+class RandomPlayer(BasePlayer):
     """
     Choose random action with uniform distribution
     """
@@ -18,7 +18,7 @@ class RandomPlayer(Player):
                 game_state.players_piles.get_last_card(card.color).value <= card.value
             ):
                 own_possible_cards.append(card)
-        card_action = random.randint(0, self.N_CARDS_IN_HAND - 1 + len(own_possible_cards))
+        card_action = np.random.randint(0, self.N_CARDS_IN_HAND + len(own_possible_cards))
         if card_action < self.N_CARDS_IN_HAND:
             card = self.hand[card_action]
             action = CardAction.PUSH_DISCARD_PILE
@@ -34,7 +34,7 @@ class RandomPlayer(Player):
                 and (action is CardAction.PUSH_OWN_PILE or color is not card.color)
             )
         ]
-        draw_action = random.randint(0, len(possible_colors_to_draw))
+        draw_action = np.random.randint(0, len(possible_colors_to_draw) + 1)
         if draw_action == len(possible_colors_to_draw):
             draw_source = PullingSource.DRAW_PILE
             draw_color = None

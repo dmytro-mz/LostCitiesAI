@@ -1,16 +1,16 @@
 from __future__ import annotations
-from abc import abstractmethod
+from abc import abstractmethod, ABC
 from typing import Union
 
-from action import Action
-from card import Card
+from src.action import Action
+from src.card import Card
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from game import GameState
+    from src.game import GameState
 
 
-class Player:
+class BasePlayer(ABC):
     N_CARDS_IN_HAND = 8
 
     def __init__(self):
@@ -42,13 +42,11 @@ class Player:
         """
         This function called in the end of the game and can be used for RL agent
         """
-        pass
 
     def end_turn(self, game_state: GameState):
         """
         This function called in the end of the turn and can be used for RL agent
         """
-        pass
 
 
 class HandOverflow(Exception):

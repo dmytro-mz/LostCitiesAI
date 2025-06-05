@@ -1,8 +1,8 @@
 from dataclasses import dataclass
-from action import Action, CardAction, PullingSource
-from deck import Deck
-from player import Player
-from card import ColorsPiles
+from src.action import Action, CardAction, PullingSource
+from src.deck import Deck
+from src.players.base_player import BasePlayer
+from src.card import ColorsPiles
 
 
 @dataclass
@@ -10,10 +10,11 @@ class GameState:
     players_piles: ColorsPiles
     opponents_piles: ColorsPiles
     discard_piles: ColorsPiles
+    draw_stack_size: int
 
 
 class Game:
-    def __init__(self, player_1: Player, player_2: Player):
+    def __init__(self, player_1: BasePlayer, player_2: BasePlayer):
         self.deck = Deck()
         self.player_1 = player_1
         self.player_2 = player_2
@@ -37,23 +38,24 @@ class Game:
         i = 0
         while self.deck.get_deck_size():
             player = self.player_1 if i % 2 == 0 else self.player_2
-            action = player.choose_action(self.get_current_state(player))
+            action = player.choose_action(self._get_current_state(player))
             self.validate_action(action, player)
             self.do_action(action, player)
-            player.end_turn(self.get_current_state(player))
+            player.end_turn(self._get_current_state(player))
             i += 1
         for player in [self.player_1, self.player_2]:
-            player.end_game(self.get_current_state(player))
+            player.end_game(self._get_current_state(player))
 
-    def get_current_state(self, player):
+    def _get_current_state(self, player) -> GameState:
         player_is_1 = player is self.player_1
         return GameState(
-            self.player_1_piles if player_is_1 else self.player_2_piles,
-            self.player_2_piles if player_is_1 else self.player_1_piles,
-            self.discard_piles,
+            players_piles=self.player_1_piles if player_is_1 else self.player_2_piles,
+            opponents_piles=self.player_2_piles if player_is_1 else self.player_1_piles,
+            discard_piles=self.discard_piles,
+            draw_stack_size=self.deck.get_deck_size(),
         )
 
-    def validate_action(self, action: Action, player: Player):
+    def validate_action(self, action: Action, player: BasePlayer):
         assert action.card in player.hand
         if action.card_action == CardAction.PUSH_OWN_PILE:
             player_pile = self.player_1_piles if player is self.player_1 else self.player_2_piles
@@ -66,7 +68,7 @@ class Game:
             if action.card_action == CardAction.PUSH_DISCARD_PILE:
                 assert action.pulling_color != action.card.color
 
-    def do_action(self, action: Action, player: Player):
+    def do_action(self, action: Action, player: BasePlayer):
         player.pop_hand(action.card)
 
         if action.card_action == CardAction.PUSH_OWN_PILE:

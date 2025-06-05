@@ -1,1 +1,6 @@
 black==24.10.0
+numpy==2.0.2
+--extra-index-url https://download.pytorch.org/whl/nightly/cpu
+torch --pre
+torchvision --pre
+torchaudio --pre

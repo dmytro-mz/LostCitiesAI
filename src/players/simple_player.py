@@ -1,9 +1,9 @@
-from action import Action, CardAction, PullingSource
-from game import Game, GameState
-from player import Player
+from src.action import Action, CardAction, PullingSource
+from src.game import Game, GameState
+from src.players.base_player import BasePlayer
 
 
-class SimplePlayer(Player):
+class SimplePlayer(BasePlayer):
     """
     Put in own pile card with the lowest score if possible.
     Put card with the lowest score in discard pile otherwise.

@@ -1,6 +1,6 @@
 import random
-from card import Card, CARD_VALUES
-from enums import Color
+from src.card import Card, CARD_VALUES
+from src.enums import Color
 
 
 class Deck:

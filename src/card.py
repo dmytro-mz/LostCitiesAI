@@ -1,4 +1,6 @@
-from enums import Color
+from typing import Optional
+
+from src.enums import Color
 from dataclasses import dataclass
 
 # (0) represents 3 investment cards
@@ -35,10 +37,12 @@ class ColorsPiles:
     def is_color_empty(self, color: Color) -> bool:
         return not self.piles[color]
 
-    def get_last_card(self, color: Color) -> Card:
+    def get_last_card(self, color: Color) -> Optional[Card]:
+        if self.is_color_empty(color):
+            return None
         return self.piles[color][-1]
 
-    def get_piles_value(self):
+    def get_piles_value(self) -> int:
         return sum([self.get_pile_value(color) for color in Color])
 
     def get_pile_value(self, color: Color) -> int:
